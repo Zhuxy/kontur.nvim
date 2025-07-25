@@ -1,0 +1,139 @@
+*nvim-indent.lua* A neovim plugin to select lines by indent
+
+Author: Ian.Zhu 
+Mail:   redilove@gmail.com
+
+==============================================================================
+Table of Contents                  *nvim-indent*
+
+1. Introduction                        |nvim-indent-introduction|
+2. Configuration                       |nvim-indent-configuration|
+3. Usage                               |nvim-indent-usage|
+
+==============================================================================
+1. INTRODUCTION                                     *nvim-indent-introduction*
+
+`nvim-indent` is a plugin to help you select or operate with texts by indent level.
+
+The basic concept is to select neighboring lines of text base on the indent level under the cursor, make them a kind of |text-objects| for futher operation.
+
+When searching the lines, the *(i)nside* operation means all the neighboring lines whose indent level is equal or lower than the line under the cursor.
+
+And the *(a)round* operation means all the neighboring lines whose indent level is equal or lower than the line under the cursor, plus a upmost line or a downmost line which has a lower indent level if existed.
+
+Can including or excluding any nearest empty line when searching.
+
+==============================================================================
+2. Configuration                                   *nvim-indent-configuration*
+
+The fault keystroke for indent line is `i` and `I`. If you want to use another pair of character, you can set the config object:
+
+>
+    require("nvim-indent").setup({
+	text_object_char = 'l', -- now use `il` or `al` to select line
+    })
+<
+
+==============================================================================
+3. Usage                                                   *nvim-indent-usage*
+
+Here is a function:
+
+>
+    🮛local function test()
+    🮛  print(1)
+    █  print(2)
+    🮛  print(3)
+    🮛end
+<
+
+use `vii` to select function body (Thay all have the same indent level):
+
+>
+    🮛local function test()
+    █  print(1)
+    █  print(2)
+    █  print(3)
+    🮛end
+<
+
+use `vai` to select all function definition (inluding the upmost line with a less indent level, but not downmost one):
+
+>
+    █local function test()
+    █  print(1)
+    █  print(2)
+    █  print(3)
+    🮛end
+<
+
+use `vaI` to select all function definition (including the upmost and downmost line with a less indent level):
+
+>
+    █local function test()
+    █  print(1)
+    █  print(2)
+    █  print(3)
+    █end
+<
+
+
+Here are some markdown texts:
+
+>
+    🮛# Header 1
+    🮛- List 1
+    🮛  - Sub list 1
+    █  - Sub list 2
+    🮛  - Sub list 3
+    🮛
+    🮛# Header 2
+<
+
+use `vii` to select sub lists (without the empty line):
+
+>
+    🮛# Header 1
+    🮛- List 1
+    █  - Sub list 1
+    █  - Sub list 2
+    █  - Sub list 3
+    🮛
+    🮛# Header 2
+<
+
+use `viI` to select sub lists (including the empty line):
+
+>
+    🮛# Header 1
+    🮛- List 1
+    █  - Sub list 1
+    █  - Sub list 2
+    █  - Sub list 3
+    █
+    🮛# Header 2
+<
+
+use `vai` to select List 1 and Sub lists (without the empty line):
+
+>
+    🮛# Header 1
+    █- List 1
+    █  - Sub list 1
+    █  - Sub list 2
+    █  - Sub list 3
+    🮛
+    🮛# Header 2
+<
+
+use `vaI` to select List 1 and Sub lists (including the empty line):
+
+>
+    🮛# Header 1
+    █- List 1
+    █  - Sub list 1
+    █  - Sub list 2
+    █  - Sub list 3
+    █
+    🮛# Header 2
+<
