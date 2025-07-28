@@ -16,17 +16,18 @@ UPDATE:
 
 Now we can select content by Markdown title level.
 
-Using `vit` to select all lines under the nearest Markdown title, and use `vat` to select all lines under the Markdown title including title itself.
+Using `vit` to select all lines under the nearest Markdown title, and use `vat` to select all lines under the Markdown title including the title itself.
 
 
 
 ## Config
 
-The fault keystroke for indent line is `i` and `I`. If you want to use another pair of character, you can set the config object:
+The default keystroke for indent line is `i` and `I`. If you want to use another pair of character, you can set the config object:
 
 ```lua
 require("kontur").setup({
-    text_object_char = 'i', -- now use `ii` or `ai` to select line
+    indent_object_char = 'i', -- now use `ii` or `ai` to select indent
+    title_object_char = 't', -- now use `it` or `at` to select title
 })
 ```
 

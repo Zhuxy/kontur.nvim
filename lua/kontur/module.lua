@@ -35,8 +35,6 @@ M.select_indent = function(around, include_last)
   -- Ensure we don't go before the first line
   if select_top < 1 then select_top = 1 end
 
-  local uppermost_indent = vim.fn.indent(select_top)
-
   -- Find the bottom line of the indented block
   local select_bottom = current_line
   local last_line = vim.fn.line('$')
