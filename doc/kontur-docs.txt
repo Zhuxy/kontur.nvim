@@ -31,6 +31,7 @@ The default keystroke for indent line is `i` and `I`. If you want to use another
 >
     require("kontur").setup({
 	text_object_char = 'i', -- now use `ii` or `ai` to select line
+	prefix_object_char = 'p', -- now use `ip` or `ap` to select prefix block
     })
 <
 
@@ -162,4 +163,66 @@ use `vat` to select all lines under the Markdown title including title itself:
     █  - Sub list 3
     █
     🮛# Header 2
+<
+
+*Select by Prefix*
+
+Here are some comments:
+
+>
+    🮛-- This is a comment
+    █-- This is another comment
+    █-- And one more
+    🮛
+    🮛local function test()
+<
+
+use `vip` to select the comment block:
+
+>
+    🮛-- This is a comment
+    █-- This is another comment
+    █-- And one more
+    🮛
+    🮛local function test()
+<
+
+use `vap` to select the comment block including surrounding blank lines:
+
+>
+    🮛-- This is a comment
+    █-- This is another comment
+    █-- And one more
+    █
+    🮛local function test()
+<
+
+Here are some numbered lists:
+
+>
+    🮛1. First item
+    █2. Second item
+    █3. Third item
+    🮛
+    🮛- A bullet point
+<
+
+use `vip` to select the numbered list:
+
+>
+    🮛1. First item
+    █2. Second item
+    █3. Third item
+    🮛
+    🮛- A bullet point
+<
+
+use `vap` to select the numbered list including surrounding blank lines:
+
+>
+    🮛1. First item
+    █2. Second item
+    █3. Third item
+    █
+    🮛- A bullet point
 <

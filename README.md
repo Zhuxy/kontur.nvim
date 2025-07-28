@@ -28,6 +28,7 @@ The default keystroke for indent line is `i` and `I`. If you want to use another
 require("kontur").setup({
     indent_object_char = 'i', -- now use `ii` or `ai` to select indent
     title_object_char = 't', -- now use `it` or `at` to select title
+    prefix_object_char = 'p', -- now use `ip` or `ap` to select prefix block
 })
 ```
 
