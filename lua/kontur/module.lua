@@ -6,7 +6,10 @@
 local M = {}
 
 
-local is_blank_line = function(line) return string.match(vim.fn.getline(line), '^%s*$') end
+local is_blank_line = function(line)
+  local line_content = vim.fn.getline(line)
+  return line_content == nil or line_content:match("^%s*$")
+end
 
 M.select_indent = function(around, include_last)
   local current_line = vim.fn.line('.')
@@ -114,6 +117,73 @@ M.select_under_title = function(include_title)
   if select_top > select_bottom then return end
 
   -- Perform selection
+  vim.api.nvim_win_set_cursor(0, {select_top, 0})
+  vim.cmd('normal! V')
+  vim.api.nvim_win_set_cursor(0, {select_bottom, 0})
+end
+
+local function get_prefix_pattern(line)
+  local line_content = vim.fn.getline(line)
+  if not line_content then return nil end
+
+  -- Try to match a numbered list pattern (e.g., "1.", "12.")
+  -- This pattern matches optional leading whitespace, then one or more digits, then a dot, then optional whitespace.
+  local num_list_match = line_content:match("^%s*(%d+%.%s*)")
+  if num_list_match then
+    -- Return a pattern that matches any number followed by a dot and optional space at the beginning of the line
+    return "^%s*%d+%.%s*"
+  end
+
+  -- Otherwise, get the first word as the literal prefix
+  local literal_prefix = line_content:match("^%s*([^%s]+)")
+  if not literal_prefix then return nil end
+
+  -- Escape magic characters in the literal prefix for use as a pattern
+  local escaped_prefix = literal_prefix:gsub("([%^$().%*+-?])", "%%%1")
+
+  -- Return a pattern that matches optional leading whitespace, then the escaped literal prefix
+  return "^%s*" .. escaped_prefix
+end
+
+M.select_prefix_block = function(around)
+  local current_line = vim.fn.line('.')
+  local pattern = get_prefix_pattern(current_line)
+
+  if not pattern then
+    return
+  end
+
+  local select_top = current_line
+  while select_top > 1 do
+    local prev_line_content = vim.fn.getline(select_top - 1)
+    if prev_line_content and prev_line_content:match(pattern) then
+      select_top = select_top - 1
+    else
+      break
+    end
+  end
+
+  local select_bottom = current_line
+  local last_line = vim.fn.line('$')
+  while select_bottom < last_line do
+    local next_line_content = vim.fn.getline(select_bottom + 1)
+    if next_line_content and next_line_content:match(pattern) then
+      select_bottom = select_bottom + 1
+    else
+      break
+    end
+  end
+
+  -- Now handle the 'around' logic for blank lines
+  if around then
+    while select_top > 1 and is_blank_line(select_top - 1) do
+      select_top = select_top - 1
+    end
+    while select_bottom < last_line and is_blank_line(select_bottom + 1) do
+      select_bottom = select_bottom + 1
+    end
+  end
+
   vim.api.nvim_win_set_cursor(0, {select_top, 0})
   vim.cmd('normal! V')
   vim.api.nvim_win_set_cursor(0, {select_bottom, 0})

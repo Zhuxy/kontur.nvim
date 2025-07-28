@@ -12,6 +12,7 @@ local module = require("kontur.module")
 local config = {
   indent_object_char = 'i',
   title_object_char = 't',
+  prefix_object_char = 'p',
 }
 
 ---@class MyModule
@@ -33,6 +34,8 @@ M.setup = function(args)
     vim.api.nvim_set_keymap(mode, 'a' .. string.upper(M.config.indent_object_char), ':<c-u>lua require("kontur").select_indent(true, true)<cr>', { noremap = true, silent = true })
     vim.api.nvim_set_keymap(mode, 'i' .. M.config.title_object_char, ':<c-u>lua require("kontur").select_under_title(false)<cr>', { noremap = true, silent = true })
     vim.api.nvim_set_keymap(mode, 'a' .. M.config.title_object_char, ':<c-u>lua require("kontur").select_under_title(true)<cr>', { noremap = true, silent = true })
+    vim.api.nvim_set_keymap(mode, 'i' .. M.config.prefix_object_char, ':<c-u>lua require("kontur").select_prefix_block(false)<cr>', { noremap = true, silent = true })
+    vim.api.nvim_set_keymap(mode, 'a' .. M.config.prefix_object_char, ':<c-u>lua require("kontur").select_prefix_block(true)<cr>', { noremap = true, silent = true })
   end
 end
 
@@ -43,6 +46,10 @@ end
 
 M.select_under_title = function(include_title)
   return module.select_under_title(include_title)
+end
+
+M.select_prefix_block = function(around)
+  return module.select_prefix_block(around)
 end
 
 return M
