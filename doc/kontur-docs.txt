@@ -1,4 +1,4 @@
-*kontur.nvim* A neovim plugin to select lines by indent and markdown titles
+*kontur.nvim* A neovim plugin to select lines by indent, markdown headings and prefix patterns
 
 Author: Ian.Zhu 
 Mail:   redilove@gmail.com
@@ -9,6 +9,8 @@ Table of Contents                  *kontur*
 1. Introduction                        |kontur-introduction|
 2. Configuration                       |kontur-configuration|
 3. Usage                               |kontur-usage|
+4. Select by Markdown Headings         |kontur-markdown-headings|
+5. Select by Prefix Pattern            |kontur-prefix-pattern|
 
 ==============================================================================
 1. INTRODUCTION                                     *kontur-introduction*
@@ -30,7 +32,8 @@ The default keystroke for indent line is `i` and `I`. If you want to use another
 
 >
     require("kontur").setup({
-	text_object_char = 'i', -- now use `ii` or `ai` to select line
+	indent_object_char = 'i', -- now use `ii` or `ai` to select indent
+	heading_object_char = 'h', -- now use `ih` or `ah` to select heading
 	prefix_object_char = 'p', -- now use `ip` or `ap` to select prefix block
     })
 <
@@ -139,9 +142,10 @@ use `vaI` to select List 1 and Sub lists (including the empty line):
     🮛# Header 2
 <
 
-*Select by Markdown titles*
+==============================================================================
+4. Select by Markdown Headings                      *kontur-markdown-headings*
 
-use `vit` to select all lines under the nearest Markdown title:
+use `vih` to select all lines under the nearest Markdown heading:
 
 >
     🮛# Header 1
@@ -153,7 +157,7 @@ use `vit` to select all lines under the nearest Markdown title:
     🮛# Header 2
 <
 
-use `vat` to select all lines under the Markdown title including title itself:
+use `vah` to select all lines under the Markdown heading including heading itself:
 
 >
     █# Header 1
@@ -165,7 +169,8 @@ use `vat` to select all lines under the Markdown title including title itself:
     🮛# Header 2
 <
 
-*Select by Prefix*
+==============================================================================
+5. Select by Prefix Pattern                         *kontur-prefix-pattern*
 
 Here are some comments:
 

@@ -60,17 +60,17 @@ M.select_indent = function(around, include_last)
   vim.api.nvim_win_set_cursor(0, {select_bottom, 0})
 end
 
-local function get_title_level(line)
+local function get_heading_level(line)
   local line_str = vim.fn.getline(line)
   if not line_str then return nil end
   local match = string.match(line_str, '^(#+)%s+.*$')
   return match and #match
 end
 
-local function find_governing_title(start_line)
+local function find_governing_heading(start_line)
   local line = start_line
   while line > 0 do
-    local level = get_title_level(line)
+    local level = get_heading_level(line)
     if level then
       return line, level
     end
@@ -79,11 +79,11 @@ local function find_governing_title(start_line)
   return nil
 end
 
-local function find_next_title(start_line, current_level)
+local function find_next_heading(start_line, current_level)
   local line = start_line + 1
   local last_line = vim.fn.line('$')
   while line <= last_line do
-    local next_level = get_title_level(line)
+    local next_level = get_heading_level(line)
     if next_level and next_level <= current_level then
       return line
     end
@@ -92,20 +92,20 @@ local function find_next_title(start_line, current_level)
   return nil
 end
 
-M.select_under_title = function(include_title)
-  local title_line, title_level = find_governing_title(vim.fn.line('.'))
+M.select_under_heading = function(include_heading)
+  local heading_line, heading_level = find_governing_heading(vim.fn.line('.'))
 
-  if not title_line then
+  if not heading_line then
     return
   end
 
-  local select_top = include_title and title_line or title_line + 1
+  local select_top = include_heading and heading_line or heading_line + 1
 
-  local next_title_line = find_next_title(title_line, title_level)
+  local next_heading_line = find_next_heading(heading_line, heading_level)
   local select_bottom
 
-  if next_title_line then
-    select_bottom = next_title_line - 1
+  if next_heading_line then
+    select_bottom = next_heading_line - 1
   else
     select_bottom = vim.fn.line('$')
   end
