@@ -20,7 +20,7 @@ Using `vih` to select all lines under the nearest Markdown heading, and use `vah
 
 UPDATE 2:
 
-Now we can select lines which have the save prefix pattern. E.g. all lines with a comment pattern `// ` can be selected by `vip`. And also we support numbered lists, like `1. `, `2. `, ...,  `10. `, `11. `.
+Now we can select lines which have the save prefix pattern (the leftmost non-whitespace characters). E.g. all lines with a comment pattern `// ` can be selected by `vip`. And also it support numbered lists, like `1. `, `2. `, ...,  `10. `, `11. `.
 
 ## Config
 

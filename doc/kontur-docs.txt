@@ -15,7 +15,7 @@ Table of Contents                  *kontur*
 ==============================================================================
 1. INTRODUCTION                                     *kontur-introduction*
 
-`kontur.nvim` provides powerful and intuitive text objects to select and operate on blocks of text based on their structure. It understands both code indentation and Markdown-style headings, allowing you to work with logical blocks seamlessly.
+`kontur.nvim` provides powerful and intuitive text objects to select and operate on blocks of text based on their structure. It understands both code indentation, Markdown-style headings and simple prefix pattern, allowing you to work with logical blocks seamlessly.
 
 The basic concept is to select neighboring lines of text base on the indent level under the cursor.
 
@@ -32,9 +32,9 @@ The default keystroke for indent line is `i` and `I`. If you want to use another
 
 >
     require("kontur").setup({
-	indent_object_char = 'i', -- now use `ii` or `ai` to select indent
-	heading_object_char = 'h', -- now use `ih` or `ah` to select heading
-	prefix_object_char = 'p', -- now use `ip` or `ap` to select prefix block
+        indent_object_char = 'i', -- now use `ii` or `ai` to select indent
+        heading_object_char = 'h', -- now use `ih` or `ah` to select heading
+        prefix_object_char = 'p', -- now use `ip` or `ap` to select prefix block
     })
 <
 
@@ -51,7 +51,7 @@ Here is a function:
     🮛end
 <
 
-use `vii` to select function body (Thay all have the same indent level):
+use `vii` to select function body (They all have the same indent level):
 
 >
     🮛local function test()
@@ -61,7 +61,7 @@ use `vii` to select function body (Thay all have the same indent level):
     🮛end
 <
 
-use `vai` to select all function definition (inluding the upmost line with a less indent level, but not downmost one):
+use `vai` to select all function definition (excluding the upmost line with a less indent level, but not downmost one):
 
 >
     █local function test()
@@ -145,6 +145,18 @@ use `vaI` to select List 1 and Sub lists (including the empty line):
 ==============================================================================
 4. Select by Markdown Headings                      *kontur-markdown-headings*
 
+Here are some markdown texts:
+
+>
+    🮛# Header 1
+    🮛- List 1
+    🮛  - Sub list 1
+    █  - Sub list 2
+    🮛  - Sub list 3
+    🮛
+    🮛# Header 2
+<
+
 use `vih` to select all lines under the nearest Markdown heading:
 
 >
@@ -157,7 +169,7 @@ use `vih` to select all lines under the nearest Markdown heading:
     🮛# Header 2
 <
 
-use `vah` to select all lines under the Markdown heading including heading itself:
+use `vah` to select all lines under the nearest Markdown heading including heading itself:
 
 >
     █# Header 1
@@ -172,62 +184,42 @@ use `vah` to select all lines under the Markdown heading including heading itsel
 ==============================================================================
 5. Select by Prefix Pattern                         *kontur-prefix-pattern*
 
-Here are some comments:
+Here are some code with comments (same pattern, start with `// `):
 
 >
-    🮛-- This is a comment
-    █-- This is another comment
-    █-- And one more
-    🮛
-    🮛local function test()
+    🮛let a = 42;
+    █// This is a comment
+    █// This is another comment
+    █// And one more
+    🮛print(a);
 <
 
 use `vip` to select the comment block:
 
 >
-    🮛-- This is a comment
-    █-- This is another comment
-    █-- And one more
-    🮛
-    🮛local function test()
+    🮛let a = 42;
+    █// This is a comment
+    █// This is another comment
+    █// And one more
+    🮛print(a);
 <
 
-use `vap` to select the comment block including surrounding blank lines:
-
->
-    🮛-- This is a comment
-    █-- This is another comment
-    █-- And one more
-    █
-    🮛local function test()
-<
-
-Here are some numbered lists:
+Or you can select the numbered list:
 
 >
     🮛1. First item
-    █2. Second item
+    🮛2. Second item
     █3. Third item
-    🮛
-    🮛- A bullet point
+    🮛...
+    🮛11. Eleven item
 <
 
 use `vip` to select the numbered list:
 
 >
-    🮛1. First item
+    █1. First item
     █2. Second item
     █3. Third item
-    🮛
-    🮛- A bullet point
-<
-
-use `vap` to select the numbered list including surrounding blank lines:
-
->
-    🮛1. First item
-    █2. Second item
-    █3. Third item
-    █
-    🮛- A bullet point
+    █...
+    █11. Eleven item
 <

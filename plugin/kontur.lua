@@ -1,1 +1,0 @@
-require('kontur').setup()
