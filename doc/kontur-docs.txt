@@ -19,22 +19,20 @@ Table of Contents                  *kontur*
 
 The basic concept is to select neighboring lines of text base on the indent level under the cursor.
 
-When searching the lines, the *(i)side* operation means all the neighboring lines whose indent level is equal or lower than the line under the cursor.
-
-And the *(a)round* operation means all the neighboring lines whose indent level is equal or lower than the line under the cursor, plus a upmost line or a downmost line which has a lower indent level if existed.
+When searching the lines, the operation means all the neighboring lines whose indent level is equal or lower than the line under the cursor.
 
 Including any empty line when searching.
 
 ==============================================================================
 2. Configuration                                   *kontur-configuration*
 
-The default keystroke for indent line is `i` and `I`. If you want to use another pair of character, you can set the config object:
+The default keystroke for indent line is `i`. If you want to use another character, you can set the config object:
 
 >
     require("kontur").setup({
-        indent_object_char = 'i', -- now use `ii` or `ai` to select indent
-        heading_object_char = 'h', -- now use `ih` or `ah` to select heading
-        prefix_object_char = 'p', -- now use `ip` or `ap` to select prefix block
+        indent_object_char = 'i', -- now use `ii` to select by indent
+        heading_object_char = 'h', -- now use `ih` to select by heading
+        prefix_object_char = 'p', -- now use `ip` to select by prefix pattern
     })
 <
 
@@ -44,102 +42,45 @@ The default keystroke for indent line is `i` and `I`. If you want to use another
 Here is a function:
 
 >
-    🮛local function test()
-    🮛  print(1)
-    █  print(2)
-    🮛  print(3)
-    🮛end
+     local function test()
+       print(1)
+       print(2)         <-- cursor here
+       print(3)
+     end
 <
 
 use `vii` to select function body (They all have the same indent level):
 
 >
-    🮛local function test()
+     local function test()
     █  print(1)
     █  print(2)
     █  print(3)
-    🮛end
+     end
 <
-
-use `vai` to select all function definition (excluding the upmost line with a less indent level, but not downmost one):
-
->
-    █local function test()
-    █  print(1)
-    █  print(2)
-    █  print(3)
-    🮛end
-<
-
-use `vaI` to select all function definition (including the upmost and downmost line with a less indent level):
-
->
-    █local function test()
-    █  print(1)
-    █  print(2)
-    █  print(3)
-    █end
-<
-
 
 Here are some markdown texts:
 
 >
-    🮛# Header 1
-    🮛- List 1
-    🮛  - Sub list 1
-    █  - Sub list 2
-    🮛  - Sub list 3
-    🮛
-    🮛# Header 2
+     # Header 1
+     - List 1
+       - Sub list 1
+       - Sub list 2      <-- cursor here
+       - Sub list 3
+     
+     # Header 2
 <
 
 use `vii` to select sub lists (without the empty line):
 
 >
-    🮛# Header 1
-    🮛- List 1
+     # Header 1
+     - List 1
     █  - Sub list 1
     █  - Sub list 2
     █  - Sub list 3
-    🮛
-    🮛# Header 2
-<
-
-use `viI` to select sub lists (including the empty line):
-
->
-    🮛# Header 1
-    🮛- List 1
-    █  - Sub list 1
-    █  - Sub list 2
-    █  - Sub list 3
-    █
-    🮛# Header 2
-<
-
-use `vai` to select List 1 and Sub lists (without the empty line):
-
->
-    🮛# Header 1
-    █- List 1
-    █  - Sub list 1
-    █  - Sub list 2
-    █  - Sub list 3
-    🮛
-    🮛# Header 2
-<
-
-use `vaI` to select List 1 and Sub lists (including the empty line):
-
->
-    🮛# Header 1
-    █- List 1
-    █  - Sub list 1
-    █  - Sub list 2
-    █  - Sub list 3
-    █
-    🮛# Header 2
+     
+     # Header 2
 <
 
 ==============================================================================
@@ -148,37 +89,25 @@ use `vaI` to select List 1 and Sub lists (including the empty line):
 Here are some markdown texts:
 
 >
-    🮛# Header 1
-    🮛- List 1
-    🮛  - Sub list 1
-    █  - Sub list 2
-    🮛  - Sub list 3
-    🮛
-    🮛# Header 2
+     # Header 1
+     - List 1
+       - Sub list 1
+       - Sub list 2      <-- cursor here
+       - Sub list 3
+     
+     # Header 2
 <
 
 use `vih` to select all lines under the nearest Markdown heading:
 
 >
-    🮛# Header 1
+     # Header 1
     █- List 1
     █  - Sub list 1
     █  - Sub list 2
     █  - Sub list 3
-    █
-    🮛# Header 2
-<
-
-use `vah` to select all lines under the nearest Markdown heading including heading itself:
-
->
-    █# Header 1
-    █- List 1
-    █  - Sub list 1
-    █  - Sub list 2
-    █  - Sub list 3
-    █
-    🮛# Header 2
+     
+     # Header 2
 <
 
 ==============================================================================
@@ -187,31 +116,31 @@ use `vah` to select all lines under the nearest Markdown heading including headi
 Here are some code with comments (same pattern, start with `// `):
 
 >
-    🮛let a = 42;
-    █// This is a comment
-    █// This is another comment
-    █// And one more
-    🮛print(a);
+     let a = 42;
+     // This is a comment
+     // This is another comment          <-- cursor here
+     // And one more
+     print(a);
 <
 
 use `vip` to select the comment block:
 
 >
-    🮛let a = 42;
+     let a = 42;
     █// This is a comment
     █// This is another comment
     █// And one more
-    🮛print(a);
+     print(a);
 <
 
 Or you can select the numbered list:
 
 >
-    🮛1. First item
-    🮛2. Second item
-    █3. Third item
-    🮛...
-    🮛11. Eleven item
+     1. First item
+     2. Second item
+     3. Third item      <-- cursor here
+     ...
+     11. Eleven item
 <
 
 use `vip` to select the numbered list:

@@ -8,7 +8,7 @@ local module = require("kontur.module")
 ---@class Config
 ---@field indent_object_char string which char used after select INDENT operator to form a text-object
 ---@field heading_object_char string which char used after select under HEADING operator to form a text-object
----@field include_last boolean whether to include the last line when "around" some indented lines
+---@field prefix_object_char string which char used after select PREFIX operator to form a text-object
 local config = {
   indent_object_char = 'i',
   heading_object_char = 'h',
@@ -28,28 +28,23 @@ M.setup = function(args)
   M.config = vim.tbl_deep_extend("force", M.config, args or {})
 
   for _,mode in ipairs({ 'x', 'o' }) do
-    vim.api.nvim_set_keymap(mode, 'i' .. M.config.indent_object_char, ':<c-u>lua require("kontur").select_indent(false, false)<cr>', { noremap = true, silent = true })
-    vim.api.nvim_set_keymap(mode, 'a' .. M.config.indent_object_char, ':<c-u>lua require("kontur").select_indent(true, false)<cr>', { noremap = true, silent = true })
-    vim.api.nvim_set_keymap(mode, 'i' .. string.upper(M.config.indent_object_char), ':<c-u>lua require("kontur").select_indent(false, true)<cr>', { noremap = true, silent = true })
-    vim.api.nvim_set_keymap(mode, 'a' .. string.upper(M.config.indent_object_char), ':<c-u>lua require("kontur").select_indent(true, true)<cr>', { noremap = true, silent = true })
-    vim.api.nvim_set_keymap(mode, 'i' .. M.config.heading_object_char, ':<c-u>lua require("kontur").select_under_heading(false)<cr>', { noremap = true, silent = true })
-    vim.api.nvim_set_keymap(mode, 'a' .. M.config.heading_object_char, ':<c-u>lua require("kontur").select_under_heading(true)<cr>', { noremap = true, silent = true })
-    vim.api.nvim_set_keymap(mode, 'i' .. M.config.prefix_object_char, ':<c-u>lua require("kontur").select_prefix_block(false)<cr>', { noremap = true, silent = true })
-    vim.api.nvim_set_keymap(mode, 'a' .. M.config.prefix_object_char, ':<c-u>lua require("kontur").select_prefix_block(true)<cr>', { noremap = true, silent = true })
+    vim.api.nvim_set_keymap(mode, 'i' .. M.config.indent_object_char, ':<c-u>lua require("kontur").select_indent()<cr>', { noremap = true, silent = true })
+    vim.api.nvim_set_keymap(mode, 'i' .. M.config.heading_object_char, ':<c-u>lua require("kontur").select_under_heading()<cr>', { noremap = true, silent = true })
+    vim.api.nvim_set_keymap(mode, 'i' .. M.config.prefix_object_char, ':<c-u>lua require("kontur").select_prefix_block()<cr>', { noremap = true, silent = true })
   end
 end
 
 -- this function can be called by require("kontur")
-M.select_indent = function(around, include_last)
-  return module.select_indent(around, include_last)
+M.select_indent = function()
+  return module.select_indent()
 end
 
-M.select_under_heading = function(include_heading)
-  return module.select_under_heading(include_heading)
+M.select_under_heading = function()
+  return module.select_under_heading()
 end
 
-M.select_prefix_block = function(around)
-  return module.select_prefix_block(around)
+M.select_prefix_block = function()
+  return module.select_prefix_block()
 end
 
 return M

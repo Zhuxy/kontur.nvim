@@ -11,7 +11,7 @@ local is_blank_line = function(line)
   return line_content == nil or line_content:match("^%s*$")
 end
 
-M.select_indent = function(around, include_last)
+M.select_indent = function()
   local current_line = vim.fn.line('.')
   if is_blank_line(current_line) then
     return
@@ -31,10 +31,6 @@ M.select_indent = function(around, include_last)
     select_top = select_top - 1
   end
 
-  if around then
-    -- Move one line up to include the line before the block
-    select_top = select_top - 1
-  end
   -- Ensure we don't go before the first line
   if select_top < 1 then select_top = 1 end
 
@@ -43,15 +39,6 @@ M.select_indent = function(around, include_last)
   local last_line = vim.fn.line('$')
   while select_bottom < last_line and (is_blank_line(select_bottom + 1) or vim.fn.indent(select_bottom + 1) >= start_indent) do
     select_bottom = select_bottom + 1
-  end
-
-    if around and include_last and (select_bottom + 1 <= last_line) and vim.fn.indent(select_bottom + 1) >= start_indent then
-    select_bottom = select_bottom + 1
-  end
-
-  -- Adjust bottom line to not end on a blank line if not including last
-  while not include_last and is_blank_line(select_bottom) do
-    select_bottom = select_bottom - 1
   end
 
   -- Perform the selection
@@ -82,6 +69,7 @@ end
 local function find_next_heading(start_line, current_level)
   local line = start_line + 1
   local last_line = vim.fn.line('$')
+
   while line <= last_line do
     local next_level = get_heading_level(line)
     if next_level and next_level <= current_level then
@@ -92,14 +80,14 @@ local function find_next_heading(start_line, current_level)
   return nil
 end
 
-M.select_under_heading = function(include_heading)
+M.select_under_heading = function()
   local heading_line, heading_level = find_governing_heading(vim.fn.line('.'))
 
   if not heading_line then
     return
   end
 
-  local select_top = include_heading and heading_line or heading_line + 1
+  local select_top = heading_line + 1
 
   local next_heading_line = find_next_heading(heading_line, heading_level)
   local select_bottom
@@ -145,7 +133,7 @@ local function get_prefix_pattern(line)
   return "^%s*" .. escaped_prefix
 end
 
-M.select_prefix_block = function(around)
+M.select_prefix_block = function()
   local current_line = vim.fn.line('.')
   local pattern = get_prefix_pattern(current_line)
 
@@ -165,22 +153,13 @@ M.select_prefix_block = function(around)
 
   local select_bottom = current_line
   local last_line = vim.fn.line('$')
+
   while select_bottom < last_line do
     local next_line_content = vim.fn.getline(select_bottom + 1)
     if next_line_content and next_line_content:match(pattern) then
       select_bottom = select_bottom + 1
     else
       break
-    end
-  end
-
-  -- Now handle the 'around' logic for blank lines
-  if around then
-    while select_top > 1 and is_blank_line(select_top - 1) do
-      select_top = select_top - 1
-    end
-    while select_bottom < last_line and is_blank_line(select_bottom + 1) do
-      select_bottom = select_bottom + 1
     end
   end
 
