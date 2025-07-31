@@ -41,6 +41,10 @@ M.select_indent = function()
     select_bottom = select_bottom + 1
   end
 
+  if is_blank_line(select_bottom) then
+    select_bottom = select_bottom - 1
+  end
+
   -- Perform the selection
   vim.api.nvim_win_set_cursor(0, {select_top, 0})
   vim.cmd('normal! V')
