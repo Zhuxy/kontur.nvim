@@ -140,7 +140,7 @@ Or you can select the numbered list:
      2. Second item
      3. Third item      <-- cursor here
      ...
-     11. Eleven item
+     11. Eleventh item
 <
 
 use `vip` to select the numbered list:
@@ -150,5 +150,5 @@ use `vip` to select the numbered list:
     █2. Second item
     █3. Third item
     █...
-    █11. Eleven item
+    █11. Eleventh item
 <

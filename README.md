@@ -120,11 +120,11 @@ Here are some code with comments (same pattern, start with `// `):
 use `vip` to select the comment block 
 
 ```
-let a = 42;
+ let a = 42;
 █// This is a comment
 █// This is another comment      <-- cursor here
 █// And one more
-print(a);
+ print(a);
 ```
 
 Or you can select the numbered list:
@@ -134,7 +134,7 @@ Or you can select the numbered list:
  2. Second item
  3. Third item             <-- cursor here
  ...
- 11. Eleven item
+ 11. Eleventh item
 ```
 
 use `vip` to select the numbered list:
@@ -144,5 +144,5 @@ use `vip` to select the numbered list:
 █2. Second item
 █3. Third item
 █...
-█11. Eleven item 
+█11. Eleventh item 
 ```
