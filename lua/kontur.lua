@@ -30,6 +30,7 @@ M.setup = function(args)
   for _,mode in ipairs({ 'x', 'o' }) do
     vim.api.nvim_set_keymap(mode, 'i' .. M.config.indent_object_char, ':<c-u>lua require("kontur").select_indent()<cr>', { noremap = true, silent = true })
     vim.api.nvim_set_keymap(mode, 'i' .. M.config.heading_object_char, ':<c-u>lua require("kontur").select_under_heading()<cr>', { noremap = true, silent = true })
+    vim.api.nvim_set_keymap(mode, 'a' .. M.config.heading_object_char, ':<c-u>lua require("kontur").select_around_heading()<cr>', { noremap = true, silent = true })
     vim.api.nvim_set_keymap(mode, 'i' .. M.config.prefix_object_char, ':<c-u>lua require("kontur").select_prefix_block()<cr>', { noremap = true, silent = true })
   end
 end
@@ -41,6 +42,10 @@ end
 
 M.select_under_heading = function()
   return module.select_under_heading()
+end
+
+M.select_around_heading = function()
+  return module.select_around_heading()
 end
 
 M.select_prefix_block = function()

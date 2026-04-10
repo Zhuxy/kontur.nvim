@@ -14,7 +14,7 @@ UPDATE:
 
 Now we can select content by Markdown heading level.
 
-Using `vih` to select all lines under the nearest Markdown heading.
+Using `vih` to select all lines under the nearest Markdown heading, and `vah` to include the heading line itself.
 
 UPDATE 2:
 
@@ -96,6 +96,19 @@ use `vih` to select all lines under the nearest Markdown heading:
 
 ```Markdown
  # Header 1
+█- List 1
+█  - Sub list 1
+█  - Sub list 2
+█  - Sub list 3
+
+
+ # Header 2
+```
+
+use `vah` to select the heading and all its content, trimming trailing blank lines:
+
+```Markdown
+█# Header 1
 █- List 1
 █  - Sub list 1
 █  - Sub list 2

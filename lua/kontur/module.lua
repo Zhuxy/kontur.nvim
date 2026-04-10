@@ -84,15 +84,14 @@ local function find_next_heading(start_line, current_level)
   return nil
 end
 
-M.select_under_heading = function()
+local function get_heading_selection_range(include_heading_line)
   local heading_line, heading_level = find_governing_heading(vim.fn.line('.'))
 
   if not heading_line then
-    return
+    return nil
   end
 
-  local select_top = heading_line + 1
-
+  local select_top = include_heading_line and heading_line or (heading_line + 1)
   local next_heading_line = find_next_heading(heading_line, heading_level)
   local select_bottom
 
@@ -102,13 +101,35 @@ M.select_under_heading = function()
     select_bottom = vim.fn.line('$')
   end
 
-  while select_bottom > select_top and is_blank_line(select_bottom) do
+  while select_bottom >= select_top and is_blank_line(select_bottom) do
     select_bottom = select_bottom - 1
   end
 
-  if select_top > select_bottom then return end
+  if select_top > select_bottom then
+    return nil
+  end
+
+  return select_top, select_bottom
+end
+
+M.select_under_heading = function()
+  local select_top, select_bottom = get_heading_selection_range(false)
+  if not select_top then
+    return
+  end
 
   -- Perform selection
+  vim.api.nvim_win_set_cursor(0, {select_top, 0})
+  vim.cmd('normal! V')
+  vim.api.nvim_win_set_cursor(0, {select_bottom, 0})
+end
+
+M.select_around_heading = function()
+  local select_top, select_bottom = get_heading_selection_range(true)
+  if not select_top then
+    return
+  end
+
   vim.api.nvim_win_set_cursor(0, {select_top, 0})
   vim.cmd('normal! V')
   vim.api.nvim_win_set_cursor(0, {select_bottom, 0})
