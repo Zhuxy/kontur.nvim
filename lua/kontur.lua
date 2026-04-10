@@ -8,11 +8,11 @@ local module = require("kontur.module")
 ---@class Config
 ---@field indent_object_char string which char used after select INDENT operator to form a text-object
 ---@field heading_object_char string which char used after select under HEADING operator to form a text-object
----@field prefix_object_char string which char used after select PREFIX operator to form a text-object
+---@field prefix_object_char string which char used after select REPEATABLE PREFIX PATTERN operator to form a text-object
 local config = {
   indent_object_char = 'i',
   heading_object_char = 'h',
-  prefix_object_char = 'p',
+  prefix_object_char = 'r',
 }
 
 ---@class MyModule

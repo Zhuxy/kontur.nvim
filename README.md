@@ -2,7 +2,7 @@
 
 ## Intro
 
-`kontur.nvim` provides powerful and intuitive text objects to select and operate on blocks of text based on their structure. It understands both code indentation, Markdown-style headings and simple prefix pattern, allowing you to work with logical blocks seamlessly.
+`kontur.nvim` provides powerful and intuitive text objects to select and operate on blocks of text based on their structure. It understands code indentation, Markdown-style headings, and repeatable prefix patterns, allowing you to work with logical blocks seamlessly.
 
 The basic concept is to select neighboring lines of text base on the indent level under the cursor.
 
@@ -18,7 +18,7 @@ Using `vih` to select all lines under the nearest Markdown heading, and `vah` to
 
 UPDATE 2:
 
-Now we can select lines which have the save prefix pattern (the leftmost non-whitespace characters). E.g. all lines with a comment pattern `// ` can be selected by `vip`. And also it support numbered lists, like `1. `, `2. `, ...,  `10. `, `11. `.
+Now we can select lines which share the same repeatable prefix pattern, meaning the same leftmost non-whitespace marker. `r` stands for repeatable prefix pattern. For example, all lines with a comment prefix `// ` can be selected by `vir`. It also supports numbered lists such as `1. `, `2. `, ..., `10. `, `11. `.
 
 ## Config
 
@@ -28,11 +28,13 @@ The default keystroke for indent line is `i`. If you want to use another charact
 require("kontur").setup({
     indent_object_char = 'i', -- now use `ii` to select by indent
     heading_object_char = 'h', -- now use `ih` to select by markdown heading
-    prefix_object_char = 'p', -- now use `ip` to select by prefix pattern
+    prefix_object_char = 'r', -- now use `ir` to select by repeatable prefix pattern
 })
 ```
 
 ## Usage
+
+### Select by indent
 
 Here is a function:
 
@@ -78,7 +80,7 @@ use `vii` to select sub lists (without the empty line):
  # Header 2
 ```
 
-## Select by Markdown headings
+### Select by Markdown headings
 
 Here are some markdown texts: 
 
@@ -101,7 +103,6 @@ use `vih` to select all lines under the nearest Markdown heading:
 █  - Sub list 2
 █  - Sub list 3
 
-
  # Header 2
 ```
 
@@ -113,14 +114,13 @@ use `vah` to select the heading and all its content, trimming trailing blank lin
 █  - Sub list 1
 █  - Sub list 2
 █  - Sub list 3
- 
 
  # Header 2
 ```
 
-## Select by prefix pattern
+### Select by repeatable prefix pattern
 
-Here are some code with comments (same pattern, start with `// `):
+Here is some code with comments that share the same repeatable prefix pattern, `// `:
 
 ```
  let a = 42;
@@ -130,7 +130,7 @@ Here are some code with comments (same pattern, start with `// `):
  print(a);
 ```
 
-use `vip` to select the comment block 
+use `vir` to select the comment block:
 
 ```
  let a = 42;
@@ -150,7 +150,7 @@ Or you can select the numbered list:
  11. Eleventh item
 ```
 
-use `vip` to select the numbered list:
+use `vir` to select the numbered list:
 
 ```
 █1. First item
