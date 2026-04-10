@@ -151,8 +151,8 @@ local function get_prefix_pattern(line)
   local literal_prefix = line_content:match("^%s*([^%s]+)")
   if not literal_prefix then return nil end
 
-  -- Escape magic characters in the literal prefix for use as a pattern
-  local escaped_prefix = literal_prefix:gsub("([%^$().%*+-?])", "%%%1")
+  -- Escape Lua pattern metacharacters without touching ordinary digits.
+  local escaped_prefix = literal_prefix:gsub("([%(%)%.%%%+%-%*%?%[%]%^%$])", "%%%1")
 
   -- Return a pattern that matches optional leading whitespace, then the escaped literal prefix
   return "^%s*" .. escaped_prefix
