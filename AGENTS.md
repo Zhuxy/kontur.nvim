@@ -10,7 +10,7 @@ There is no build step. Use these commands during development:
 - `nvim --headless "+lua require('kontur').setup({})" +qa`: quick smoke test that the plugin loads without errors.
 - `nvim -u NONE "+set rtp+=." "+help kontur" +qa`: verify the runtime path and Vim help entry after doc updates.
 
-For interactive testing, open a sample buffer in Neovim and exercise `vii`, `vih`, and `vip` against indented code, Markdown headings, and prefix-based lists.
+For interactive testing, open a sample buffer in Neovim and exercise `vii`, `vih`, `vip`, and `vit` against indented code, Markdown headings, prefix-based lists, and Markdown tables.
 
 ## Coding Style & Naming Conventions
 Lua files use 2-space indentation, Unix line endings, and a 120-column target as defined in `.stylua.toml`. Prefer double quotes when practical and let `stylua` normalize details. Follow the existing module style: local helpers first, exported functions on `M`, and descriptive names such as `select_under_heading` or `get_prefix_pattern`. Keep the public API in `lua/kontur.lua` thin and place behavior-heavy logic in `lua/kontur/module.lua`.
